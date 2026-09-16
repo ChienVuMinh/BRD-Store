@@ -1,0 +1,40 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.4)
+
+2026-09-16T15:21:55.728+07:00  INFO 24756 --- [brd-store-backend] [           main] c.brdstore.backend.BackendApplication    : Starting BackendApplication using Java 17.0.17 with PID 24756 (C:\Users\chienvm\Desktop\BRD_STORE\backend\target\classes started by chienvm in C:\Users\chienvm\Desktop\BRD_STORE\backend)
+2026-09-16T15:21:55.730+07:00  INFO 24756 --- [brd-store-backend] [           main] c.brdstore.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-09-16T15:21:56.415+07:00  INFO 24756 --- [brd-store-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-16T15:21:56.506+07:00  INFO 24756 --- [brd-store-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 87 ms. Found 23 JPA repository interfaces.
+2026-09-16T15:21:56.914+07:00  INFO 24756 --- [brd-store-backend] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-09-16T15:21:56.922+07:00  INFO 24756 --- [brd-store-backend] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-16T15:21:56.923+07:00  INFO 24756 --- [brd-store-backend] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2026-09-16T15:21:56.966+07:00  INFO 24756 --- [brd-store-backend] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-16T15:21:56.966+07:00  INFO 24756 --- [brd-store-backend] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1201 ms
+2026-09-16T15:21:57.120+07:00  INFO 24756 --- [brd-store-backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-16T15:21:57.250+07:00  INFO 24756 --- [brd-store-backend] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5e68be2
+2026-09-16T15:21:57.251+07:00  INFO 24756 --- [brd-store-backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-16T15:21:57.272+07:00  INFO 24756 --- [brd-store-backend] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/brd_store (PostgreSQL 16.13)
+2026-09-16T15:21:57.348+07:00  INFO 24756 --- [brd-store-backend] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.066s)
+2026-09-16T15:21:57.427+07:00  INFO 24756 --- [brd-store-backend] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 2
+2026-09-16T15:21:57.428+07:00  INFO 24756 --- [brd-store-backend] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-09-16T15:21:57.473+07:00  INFO 24756 --- [brd-store-backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-16T15:21:57.503+07:00  INFO 24756 --- [brd-store-backend] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-09-16T15:21:57.522+07:00  INFO 24756 --- [brd-store-backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-16T15:21:57.682+07:00  INFO 24756 --- [brd-store-backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-16T15:21:58.605+07:00  INFO 24756 --- [brd-store-backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-16T15:21:58.637+07:00  INFO 24756 --- [brd-store-backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-16T15:21:59.135+07:00  INFO 24756 --- [brd-store-backend] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-16T15:21:59.506+07:00  WARN 24756 --- [brd-store-backend] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-16T15:21:59.894+07:00  INFO 24756 --- [brd-store-backend] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-09-16T15:21:59.903+07:00  INFO 24756 --- [brd-store-backend] [           main] c.brdstore.backend.BackendApplication    : Started BackendApplication in 4.435 seconds (process running for 4.679)
+2026-09-16T15:22:15.116+07:00  INFO 24756 --- [brd-store-backend] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-16T15:22:15.117+07:00  INFO 24756 --- [brd-store-backend] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-16T15:22:15.119+07:00  INFO 24756 --- [brd-store-backend] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-09-16T16:09:22.387+07:00  WARN 24756 --- [brd-store-backend] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m53s120ms347µs300ns).
