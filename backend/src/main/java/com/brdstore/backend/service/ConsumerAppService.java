@@ -2,6 +2,7 @@ package com.brdstore.backend.service;
 
 import com.brdstore.backend.audit.AuditService;
 import com.brdstore.backend.dto.common.InstallRequest;
+import com.brdstore.backend.dto.common.MyInstallResponse;
 import com.brdstore.backend.dto.review.CreateReviewRequest;
 import com.brdstore.backend.dto.review.ReviewResponse;
 import com.brdstore.backend.entity.*;
@@ -57,6 +58,15 @@ public class ConsumerAppService {
         installRepository.save(install);
 
         auditService.log(AuditAction.CREATE, "app_installs", String.valueOf(install.getId()), null, appId);
+    }
+
+    public List<MyInstallResponse> listMyInstalls(UUID consumerId) {
+        List<AppInstall> installs = installRepository.findByConsumerId(consumerId);
+        java.util.LinkedHashMap<UUID, AppInstall> latestByApp = new java.util.LinkedHashMap<>();
+        installs.stream()
+                .sorted(java.util.Comparator.comparing(AppInstall::getInstalledAt).reversed())
+                .forEach(i -> latestByApp.putIfAbsent(i.getApp().getId(), i));
+        return latestByApp.values().stream().map(MyInstallResponse::from).toList();
     }
 
     @Transactional

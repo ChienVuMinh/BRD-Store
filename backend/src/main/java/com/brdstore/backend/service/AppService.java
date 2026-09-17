@@ -10,6 +10,7 @@ import com.brdstore.backend.dto.app.UpdateAppRequest;
 import com.brdstore.backend.entity.*;
 import com.brdstore.backend.entity.enums.AppStatus;
 import com.brdstore.backend.entity.enums.AuditAction;
+import com.brdstore.backend.entity.enums.NotificationType;
 import com.brdstore.backend.exception.ApiException;
 import com.brdstore.backend.repository.*;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,8 @@ public class AppService {
     private final AppStatsRepository appStatsRepository;
     private final FileStorageService fileStorageService;
     private final AuditService auditService;
+    private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     public AppService(AppRepository appRepository, PartnerRepository partnerRepository,
                        ContentRatingRepository contentRatingRepository, AppCategoryRepository appCategoryRepository,
@@ -47,7 +50,8 @@ public class AppService {
                        AppPermissionMapRepository permissionMapRepository, TagRepository tagRepository,
                        AppTagMapRepository tagMapRepository, AppScreenshotRepository screenshotRepository,
                        AppStatsRepository appStatsRepository, FileStorageService fileStorageService,
-                       AuditService auditService) {
+                       AuditService auditService, UserRepository userRepository,
+                       NotificationService notificationService) {
         this.appRepository = appRepository;
         this.partnerRepository = partnerRepository;
         this.contentRatingRepository = contentRatingRepository;
@@ -63,6 +67,8 @@ public class AppService {
         this.appStatsRepository = appStatsRepository;
         this.fileStorageService = fileStorageService;
         this.auditService = auditService;
+        this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -172,6 +178,7 @@ public class AppService {
         app.setStatus(AppStatus.APPROVED);
         appRepository.save(app);
         auditService.log(AuditAction.STATUS_CHANGE, "apps", appId.toString(), old, app.getStatus());
+        notifyPartnerAdmin(app, "App approved", "Your app \"" + app.getName() + "\" has been approved.");
         return AppResponse.from(app);
     }
 
@@ -185,6 +192,7 @@ public class AppService {
         app.setStatus(AppStatus.REJECTED);
         appRepository.save(app);
         auditService.log(AuditAction.STATUS_CHANGE, "apps", appId.toString(), old, app.getStatus() + " reason=" + reason);
+        notifyPartnerAdmin(app, "App rejected", "Your app \"" + app.getName() + "\" was rejected. Reason: " + reason);
         return AppResponse.from(app);
     }
 
@@ -198,7 +206,13 @@ public class AppService {
         app.setStatus(AppStatus.SUSPENDED);
         appRepository.save(app);
         auditService.log(AuditAction.STATUS_CHANGE, "apps", appId.toString(), old, app.getStatus() + " reason=" + reason);
+        notifyPartnerAdmin(app, "App suspended", "Your app \"" + app.getName() + "\" has been suspended. Reason: " + reason);
         return AppResponse.from(app);
+    }
+
+    private void notifyPartnerAdmin(App app, String title, String message) {
+        userRepository.findByPartnerId(app.getPartner().getId()).stream().findFirst().ifPresent(admin ->
+                notificationService.notifyUser(admin, NotificationType.APP_STATUS_CHANGE, title, message));
     }
 
     public AppClassificationResponse getClassification(UUID appId) {

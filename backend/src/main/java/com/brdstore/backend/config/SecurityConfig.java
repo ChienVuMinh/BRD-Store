@@ -2,6 +2,7 @@ package com.brdstore.backend.config;
 
 import com.brdstore.backend.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -55,6 +56,13 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/apps/{id}",
+                                "/api/apps/{appId}/stats",
+                                "/api/apps/{appId}/published-version",
+                                "/api/apps/{appId}/reviews",
+                                "/api/reference/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

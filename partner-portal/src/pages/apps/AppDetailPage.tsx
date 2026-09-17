@@ -19,6 +19,7 @@ export default function AppDetailPage() {
     queryKey: ['app', id],
     queryFn: () => getApp(id!),
     enabled: !!id,
+    refetchInterval: 15000,
   });
 
   if (appQuery.isLoading) return <Skeleton active />;

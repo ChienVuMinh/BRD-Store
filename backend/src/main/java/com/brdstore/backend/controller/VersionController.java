@@ -51,6 +51,11 @@ public class VersionController {
         return versionService.listByApp(appId);
     }
 
+    @GetMapping("/apps/{appId}/published-version")
+    public VersionResponse getPublishedVersion(@PathVariable UUID appId) {
+        return versionService.getPublishedVersion(appId);
+    }
+
     @GetMapping("/versions")
     @PreAuthorize("hasAnyRole('S_ADMIN','O_ADMIN','O_REVIEWER','O_SUPPORT','O_REPORT')")
     public List<VersionResponse> listAll(@RequestParam(required = false) VersionStatus status) {

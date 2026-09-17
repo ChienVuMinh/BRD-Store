@@ -177,6 +177,13 @@ public class VersionService {
         return versionRepository.findByAppId(appId).stream().map(VersionResponse::from).toList();
     }
 
+    public VersionResponse getPublishedVersion(UUID appId) {
+        return versionRepository.findByAppIdAndStatus(appId, VersionStatus.PUBLISHED).stream()
+                .findFirst()
+                .map(VersionResponse::from)
+                .orElse(null);
+    }
+
     public List<VersionResponse> listAll(VersionStatus status) {
         List<AppVersion> versions = status != null ? versionRepository.findByStatus(status) : versionRepository.findAll();
         return versions.stream().map(VersionResponse::from).toList();

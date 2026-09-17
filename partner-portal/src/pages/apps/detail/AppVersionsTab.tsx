@@ -27,6 +27,7 @@ export default function AppVersionsTab({ app }: { app: AppResponse }) {
   const versionsQuery = useQuery({
     queryKey: ['app-versions', app.id],
     queryFn: () => listVersionsByApp(app.id),
+    refetchInterval: 15000,
   });
 
   const createMutation = useMutation({
