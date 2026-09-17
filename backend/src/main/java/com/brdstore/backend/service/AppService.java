@@ -1,6 +1,8 @@
 package com.brdstore.backend.service;
 
 import com.brdstore.backend.audit.AuditService;
+import com.brdstore.backend.dto.app.AppClassificationResponse;
+import com.brdstore.backend.dto.app.AppPermissionMapResponse;
 import com.brdstore.backend.dto.app.AppResponse;
 import com.brdstore.backend.dto.app.CreateAppRequest;
 import com.brdstore.backend.dto.app.PermissionMapRequest;
@@ -96,7 +98,6 @@ public class AppService {
 
         AppStats stats = new AppStats();
         stats.setApp(app);
-        stats.setAppId(app.getId());
         appStatsRepository.save(stats);
 
         auditService.log(AuditAction.CREATE, "apps", app.getId().toString(), null, AppResponse.from(app));
@@ -151,8 +152,8 @@ public class AppService {
     @Transactional
     public AppResponse submitForApproval(UUID appId) {
         App app = getOrThrow(appId);
-        if (app.getStatus() != AppStatus.DRAFT) {
-            throw ApiException.badRequest("Only DRAFT apps can be submitted for approval");
+        if (app.getStatus() != AppStatus.DRAFT && app.getStatus() != AppStatus.REJECTED) {
+            throw ApiException.badRequest("Only DRAFT or REJECTED apps can be submitted for approval");
         }
         AppStatus old = app.getStatus();
         app.setStatus(AppStatus.PENDING_APPROVAL);
@@ -200,6 +201,18 @@ public class AppService {
         return AppResponse.from(app);
     }
 
+    public AppClassificationResponse getClassification(UUID appId) {
+        List<Integer> categoryIds = categoryMapRepository.findByAppId(appId).stream()
+                .map(m -> m.getCategory().getId()).toList();
+        List<String> geoCodes = geographyMapRepository.findByAppId(appId).stream()
+                .map(m -> m.getGeography().getCode()).toList();
+        List<String> tagNames = tagMapRepository.findByAppId(appId).stream()
+                .map(m -> m.getTag().getName()).toList();
+        List<AppPermissionMapResponse> permissions = permissionMapRepository.findByAppId(appId).stream()
+                .map(AppPermissionMapResponse::from).toList();
+        return new AppClassificationResponse(categoryIds, geoCodes, tagNames, permissions);
+    }
+
     @Transactional
     public void setCategories(UUID appId, Set<Integer> categoryIds) {
         App app = getOrThrow(appId);
@@ -210,10 +223,6 @@ public class AppService {
             AppCategoryMap map = new AppCategoryMap();
             map.setApp(app);
             map.setCategory(category);
-            AppCategoryMap.Id id = new AppCategoryMap.Id();
-            id.setAppId(appId);
-            id.setCategoryId(catId);
-            map.setId(id);
             categoryMapRepository.save(map);
         }
         auditService.log(AuditAction.UPDATE, "app_category_map", appId.toString(), null, categoryIds);
@@ -229,10 +238,6 @@ public class AppService {
             AppGeographyMap map = new AppGeographyMap();
             map.setApp(app);
             map.setGeography(geo);
-            AppGeographyMap.Id id = new AppGeographyMap.Id();
-            id.setAppId(appId);
-            id.setGeographyCode(code);
-            map.setId(id);
             geographyMapRepository.save(map);
         }
         auditService.log(AuditAction.UPDATE, "app_geography_map", appId.toString(), null, geoCodes);
@@ -251,10 +256,6 @@ public class AppService {
             AppTagMap map = new AppTagMap();
             map.setApp(app);
             map.setTag(tag);
-            AppTagMap.Id id = new AppTagMap.Id();
-            id.setAppId(appId);
-            id.setTagId(tag.getId());
-            map.setId(id);
             tagMapRepository.save(map);
         }
         auditService.log(AuditAction.UPDATE, "app_tag_map", appId.toString(), null, tagNames);
@@ -275,10 +276,6 @@ public class AppService {
             map.setApp(app);
             map.setPermission(permission);
             map.setJustification(req.justification());
-            AppPermissionMap.Id id = new AppPermissionMap.Id();
-            id.setAppId(appId);
-            id.setPermissionId(req.permissionId());
-            map.setId(id);
             permissionMapRepository.save(map);
         }
         auditService.log(AuditAction.UPDATE, "app_permission_map", appId.toString(), null, permissions.size() + " permissions");

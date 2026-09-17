@@ -2,6 +2,7 @@ package com.brdstore.backend.service;
 
 import com.brdstore.backend.audit.AuditService;
 import com.brdstore.backend.dto.partner.ApiKeyResponse;
+import com.brdstore.backend.dto.partner.ApiKeySummaryResponse;
 import com.brdstore.backend.dto.partner.PartnerRegisterRequest;
 import com.brdstore.backend.dto.partner.PartnerResponse;
 import com.brdstore.backend.dto.user.CreatePartnerUserRequest;
@@ -218,6 +219,10 @@ public class PartnerService {
 
         auditService.log(AuditAction.CREATE, "partner_api_keys", key.getId().toString(), null, keyName);
         return new ApiKeyResponse(key.getId(), key.getKeyName(), rawKey, key.getIsActive(), key.getCreatedAt());
+    }
+
+    public List<ApiKeySummaryResponse> listApiKeys(UUID partnerId) {
+        return apiKeyRepository.findByPartnerId(partnerId).stream().map(ApiKeySummaryResponse::from).toList();
     }
 
     @Transactional

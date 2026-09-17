@@ -7,6 +7,7 @@ public record LoginResponse(
         String principalType,
         String id,
         String username,
-        List<String> roles
+        List<String> roles,
+        String partnerId
 ) {
 }

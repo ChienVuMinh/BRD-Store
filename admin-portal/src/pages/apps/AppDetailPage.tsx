@@ -22,7 +22,7 @@ import { approveApp, getApp, getAppStats, rejectApp, suspendApp } from '../../ap
 import { listVersionsByApp } from '../../api/versions';
 import StatusTag from '../../components/StatusTag';
 import { useAuthStore } from '../../store/authStore';
-import { getErrorMessage } from '../../api/client';
+import { getErrorMessage, resolveAssetUrl } from '../../api/client';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -111,7 +111,7 @@ export default function AppDetailPage() {
       </Space>
 
       <Space align="center" style={{ marginBottom: 16 }}>
-        {app.logoUrl && <Image src={app.logoUrl} width={64} height={64} style={{ borderRadius: 8, objectFit: 'cover' }} />}
+        {app.logoUrl && <Image src={resolveAssetUrl(app.logoUrl)} width={64} height={64} style={{ borderRadius: 8, objectFit: 'cover' }} />}
         <div>
           <Title level={3} style={{ marginBottom: 0 }}>
             {app.name} <StatusTag status={app.status} />

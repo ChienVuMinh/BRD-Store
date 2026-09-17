@@ -2,6 +2,7 @@ package com.brdstore.backend.controller;
 
 import com.brdstore.backend.common.CurrentUser;
 import com.brdstore.backend.dto.partner.ApiKeyResponse;
+import com.brdstore.backend.dto.partner.ApiKeySummaryResponse;
 import com.brdstore.backend.dto.partner.PartnerDecisionRequest;
 import com.brdstore.backend.dto.partner.PartnerRegisterRequest;
 import com.brdstore.backend.dto.partner.PartnerResponse;
@@ -79,6 +80,12 @@ public class PartnerController {
     @PreAuthorize("hasRole('P_ADMIN') and @accessGuard.isOwnPartner(#id)")
     public ApiKeyResponse createApiKey(@PathVariable UUID id, @RequestParam String keyName) {
         return partnerService.createApiKey(id, keyName, currentUser.requireId());
+    }
+
+    @GetMapping("/{id}/api-keys")
+    @PreAuthorize("hasRole('P_ADMIN') and @accessGuard.isOwnPartner(#id)")
+    public List<ApiKeySummaryResponse> listApiKeys(@PathVariable UUID id) {
+        return partnerService.listApiKeys(id);
     }
 
     @DeleteMapping("/{id}/api-keys/{keyId}")

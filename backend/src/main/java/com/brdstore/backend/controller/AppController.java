@@ -1,5 +1,6 @@
 package com.brdstore.backend.controller;
 
+import com.brdstore.backend.dto.app.AppClassificationResponse;
 import com.brdstore.backend.dto.app.AppResponse;
 import com.brdstore.backend.dto.app.CreateAppRequest;
 import com.brdstore.backend.dto.app.PermissionMapRequest;
@@ -82,6 +83,11 @@ public class AppController {
     @PreAuthorize("hasAnyRole('O_ADMIN','S_ADMIN','O_SUPPORT')")
     public AppResponse suspend(@PathVariable UUID id, @RequestBody PartnerDecisionRequest request) {
         return appService.suspend(id, request.reason());
+    }
+
+    @GetMapping("/apps/{id}/classification")
+    public AppClassificationResponse getClassification(@PathVariable UUID id) {
+        return appService.getClassification(id);
     }
 
     @PutMapping("/apps/{id}/categories")

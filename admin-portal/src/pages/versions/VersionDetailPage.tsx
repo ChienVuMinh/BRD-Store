@@ -18,7 +18,7 @@ import { getVersion, reviewApproveVersion, reviewRejectVersion } from '../../api
 import { getApp } from '../../api/apps';
 import StatusTag from '../../components/StatusTag';
 import { useAuthStore } from '../../store/authStore';
-import { getErrorMessage } from '../../api/client';
+import { getErrorMessage, resolveAssetUrl } from '../../api/client';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -98,7 +98,7 @@ export default function VersionDetailPage() {
           <Descriptions.Item label="Target SDK">{version.targetSdkVersion ?? '—'}</Descriptions.Item>
           <Descriptions.Item label="Kiến trúc hỗ trợ" span={2}>{version.supportedArchitectures ?? '—'}</Descriptions.Item>
           <Descriptions.Item label="File" span={2}>
-            {version.fileUrl ? <a href={version.fileUrl} target="_blank" rel="noreferrer">Tải file build</a> : '—'}
+            {version.fileUrl ? <a href={resolveAssetUrl(version.fileUrl)} target="_blank" rel="noreferrer">Tải file build</a> : '—'}
           </Descriptions.Item>
           <Descriptions.Item label="Dung lượng">
             {version.fileSizeBytes ? `${(version.fileSizeBytes / 1024 / 1024).toFixed(2)} MB` : '—'}

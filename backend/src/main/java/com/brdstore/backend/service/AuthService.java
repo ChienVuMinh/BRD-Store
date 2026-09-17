@@ -49,7 +49,7 @@ public class AuthService {
         String partnerId = user.getPartner() != null ? user.getPartner().getId().toString() : null;
         String token = jwtService.generateToken(user.getId().toString(), "USER", roles, partnerId);
 
-        return new LoginResponse(token, "USER", user.getId().toString(), user.getUsername(), roles);
+        return new LoginResponse(token, "USER", user.getId().toString(), user.getUsername(), roles, partnerId);
     }
 
     public LoginResponse loginConsumer(LoginRequest request) {
@@ -61,7 +61,7 @@ public class AuthService {
         }
 
         String token = jwtService.generateToken(consumer.getId().toString(), "CONSUMER", List.of("CONSUMER"), null);
-        return new LoginResponse(token, "CONSUMER", consumer.getId().toString(), consumer.getAccountId(), List.of("CONSUMER"));
+        return new LoginResponse(token, "CONSUMER", consumer.getId().toString(), consumer.getAccountId(), List.of("CONSUMER"), null);
     }
 
     @Transactional
@@ -81,6 +81,6 @@ public class AuthService {
         consumer = consumerRepository.save(consumer);
 
         String token = jwtService.generateToken(consumer.getId().toString(), "CONSUMER", List.of("CONSUMER"), null);
-        return new LoginResponse(token, "CONSUMER", consumer.getId().toString(), consumer.getAccountId(), List.of("CONSUMER"));
+        return new LoginResponse(token, "CONSUMER", consumer.getId().toString(), consumer.getAccountId(), List.of("CONSUMER"), null);
     }
 }

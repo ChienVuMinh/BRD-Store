@@ -152,6 +152,9 @@ public class VersionService {
         if (version.getStatus() != VersionStatus.APPROVED) {
             throw ApiException.badRequest("Only APPROVED versions can be published");
         }
+        if (version.getApp().getStatus() != AppStatus.APPROVED) {
+            throw ApiException.badRequest("App must be APPROVED before publishing a version");
+        }
 
         // Auto-archive previously published versions of the same app so exactly one
         // PUBLISHED version exists at a time (BRD: "Version cu tu dong luu tru").

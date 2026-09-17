@@ -91,6 +91,58 @@ export interface AppResponse {
   createdAt: string;
 }
 
+export interface CreateAppRequest {
+  osPlatform: OsPlatform;
+  packageName: string;
+  name: string;
+  shortDesc?: string | null;
+  fullDesc?: string | null;
+  contentRatingId?: number | null;
+  supportEmail?: string | null;
+  supportPhone?: string | null;
+  websiteUrl?: string | null;
+  privacyPolicyUrl?: string | null;
+  priceType?: AppPriceType | null;
+  priceVnd?: number | null;
+  appSignatureHash?: string | null;
+  isGlobalAccess?: boolean | null;
+}
+
+export interface UpdateAppRequest {
+  name?: string | null;
+  shortDesc?: string | null;
+  fullDesc?: string | null;
+  contentRatingId?: number | null;
+  supportEmail?: string | null;
+  supportPhone?: string | null;
+  websiteUrl?: string | null;
+  privacyPolicyUrl?: string | null;
+  priceType?: AppPriceType | null;
+  priceVnd?: number | null;
+  appSignatureHash?: string | null;
+  isGlobalAccess?: boolean | null;
+}
+
+export interface PermissionMapRequest {
+  permissionId: number;
+  justification: string;
+}
+
+export interface AppPermissionMapResponse {
+  permissionId: number;
+  permissionCode: string;
+  permissionName: string;
+  isSensitive: boolean;
+  justification: string;
+}
+
+export interface AppClassificationResponse {
+  categoryIds: number[];
+  geographyCodes: string[];
+  tagNames: string[];
+  permissions: AppPermissionMapResponse[];
+}
+
 export interface AppStatsResponse {
   appId: string;
   totalDownloads: number | null;
@@ -196,4 +248,35 @@ export interface ErrorResponse {
   error: string;
   message: string;
   details: string[];
+}
+
+export interface ReviewResponse {
+  id: string;
+  appId: string;
+  consumerId: string;
+  rating: number;
+  comment: string | null;
+  developerReply: string | null;
+  isHidden: boolean | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DeveloperReplyRequest {
+  reply: string;
+}
+
+export interface ApiKeyResponse {
+  id: string;
+  keyName: string;
+  plainKey: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface ApiKeySummaryResponse {
+  id: string;
+  keyName: string;
+  isActive: boolean;
+  createdAt: string;
 }
